@@ -1,0 +1,35 @@
+@if (selectedMovieDetails()) {
+  <div class="movie-container">
+    <h1>{{ selectedMovieDetails().Title }} ({{ selectedMovieDetails().Year }})</h1>
+    
+    <div class="meta-info">
+      <span><strong>Rated:</strong> {{ selectedMovieDetails().Rated }}</span> | 
+      <span><strong>Runtime:</strong> {{ selectedMovieDetails().Runtime }}</span> | 
+      <span><strong>Genre:</strong> {{ selectedMovieDetails().Genre }}</span>
+    </div>
+
+    <img [src]="selectedMovieDetails().Poster" [alt]="selectedMovieDetails().Title">
+
+    <div class="description">
+      <h3>Plot</h3>
+      <p>{{ selectedMovieDetails().Plot }}</p>
+    </div>
+
+    <div class="credits">
+      <p><strong>Director:</strong> {{ selectedMovieDetails().Director }}</p>
+      <p><strong>Actors:</strong> {{ selectedMovieDetails().Actors }}</p>
+      <p><strong>Awards:</strong> {{ selectedMovieDetails().Awards }}</p>
+    </div>
+
+    <div class="scores">
+      <p><strong>IMDb Rating:</strong> ⭐ {{ selectedMovieDetails().imdbRating }}</p>
+      <p><strong>Box Office:</strong> {{ selectedMovieDetails().BoxOffice }}</p>
+    </div>
+  </div>
+} @else {
+  <div class="loading">
+    <p>Loading the LEGO details...</p>
+  </div>
+}
+
+<button (click)="onBack()"> Back</button>

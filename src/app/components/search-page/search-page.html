@@ -3,15 +3,23 @@
 
 <button (click)="Onsearch()">Search</button>
 
-@if(this.apiMoviesList){
+@if(this.apiMoviesList()){
 <div>
-    {{this.apiMoviesList.totalResults}}
+ 
+        <p>{{movieCount()}}</p>
 </div>
 }
 
 
-@for(item of apiMoviesList; track item.imdbID){
-<div>
-    
+@for(item of apiMoviesList(); track $index){
+<div  (click)="onClick(item)">
+    Title : {{item.Title}}
+    Year : {{item.Year}}
+    Type : {{item.Type}}
+
+    <div >
+        <img [src]='item.Poster'>
+    </div>
+
 </div>
 }
