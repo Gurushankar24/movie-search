@@ -1,0 +1,52 @@
+/* Container for the whole search list */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Individual Movie Card */
+.movie-card {
+  background: #222; /* Dark theme looks better for movies */
+  color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+  &:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    background: #333;
+  }
+
+  .poster-container {
+    height: 300px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures images fill the space without stretching */
+    }
+  }
+
+  .movie-info {
+    padding: 12px;
+    
+    h3 {
+      font-size: 1rem;
+      margin: 0 0 5px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* Adds "..." if title is too long */
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin: 0;
+    }
+  }
+}

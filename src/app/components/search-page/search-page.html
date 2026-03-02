@@ -1,25 +1,21 @@
-<label>Search the movie</label>
-<input type="text" [(ngModel)]="searchedMovie" >
-
-<button (click)="Onsearch()">Search</button>
-
-@if(this.apiMoviesList()){
-<div>
- 
-        <p>{{movieCount()}}</p>
+<div class="search-header">
+  <input type="text" [(ngModel)]="searchedMovie" placeholder="Search movies...">
+  <button (click)="Onsearch()">Search</button>
+  @if(apiMoviesList().length > 0) {
+    <span>Found: {{ movieCount() }} results</span>
+  }
 </div>
-}
 
-
-@for(item of apiMoviesList(); track $index){
-<div  (click)="onClick(item)">
-    Title : {{item.Title}}
-    Year : {{item.Year}}
-    Type : {{item.Type}}
-
-    <div >
-        <img [src]='item.Poster'>
+<div class="movie-grid">
+  @for(item of apiMoviesList(); track $index) {
+    <div class="movie-card" (click)="onClick(item)">
+      <div class="poster-container">
+        <img [src]="item.Poster !== 'N/A' ? item.Poster : 'assets/placeholder.png'">
+      </div>
+      <div class="movie-info">
+        <h3>{{ item.Title }}</h3>
+        <p>{{ item.Year }} • {{ item.Type }}</p>
+      </div>
     </div>
-
+  }
 </div>
-}

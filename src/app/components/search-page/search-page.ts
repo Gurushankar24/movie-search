@@ -19,9 +19,16 @@ export class SearchPage {
   movieCount = signal('');
   selectedMovieDetails = signal('')
   ngOnInit() {
-    console.log('sfd');
+    if(this.movieService.lastSearchQuery()){
+      this.searchedMovie = this.movieService.lastSearchQuery();
+      this.Onsearch();
+    }
+    else{
+      this.searchedMovie="";
+    }
   }
   Onsearch() {
+    this.movieService.lastSearchQuery.set(this.searchedMovie);
     console.log(this.searchedMovie);
     this.movieService.searchMovies(this.searchedMovie).subscribe(
       (res) => {
@@ -40,7 +47,7 @@ export class SearchPage {
 
 onClick(data: any) {
   console.log("1. Clicked movie ID:", data.imdbID);
-  this.movieService.selectedMovieData.set(data)
+  this.movieService.selectedMovieData.set(data);
   this.router.navigate(['/movie-details'])
 }
 } 

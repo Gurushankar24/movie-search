@@ -8,7 +8,8 @@ export class MovieService {
  //  getinitalUrl :string =""
   private apiKey = 'ca3dab5d'
   private baseUrl = 'http://www.omdbapi.com'
-  selectedMovieData =signal<any>('')
+  selectedMovieData =signal<any>('');
+  lastSearchQuery = signal<string>('');
 
   http = inject(HttpClient);
 
