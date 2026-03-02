@@ -1,0 +1,17 @@
+<label>Search the movie</label>
+<input type="text" [(ngModel)]="searchedMovie" >
+
+<button (click)="Onsearch()">Search</button>
+
+@if(this.apiMoviesList){
+<div>
+    {{this.apiMoviesList.totalResults}}
+</div>
+}
+
+
+@for(item of apiMoviesList; track item.imdbID){
+<div>
+    
+</div>
+}
