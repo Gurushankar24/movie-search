@@ -1,52 +1,45 @@
-/* Container for the whole search list */
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+.search-header {
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
-  padding: 20px;
-}
 
-/* Individual Movie Card */
-.movie-card {
-  background: #222; /* Dark theme looks better for movies */
-  color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-
-  &:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
-    background: #333;
+  h1 {
+    font-size: 2.5rem;
+    color: var(--primary-red);
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
-  .poster-container {
-    height: 300px;
-    overflow: hidden;
+  .input-group {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Ensures images fill the space without stretching */
-    }
-  }
+    input {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 4px 0 0 4px;
+      border: 1px solid #333;
+      background: #2b2b2b;
+      color: white;
+      outline: none;
 
-  .movie-info {
-    padding: 12px;
-    
-    h3 {
-      font-size: 1rem;
-      margin: 0 0 5px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; /* Adds "..." if title is too long */
+      &:focus { border-color: var(--primary-red); }
     }
 
-    p {
-      font-size: 0.8rem;
-      color: #aaa;
-      margin: 0;
+    button {
+      padding: 12px 24px;
+      background: var(--primary-red);
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+
+      &:hover { background: #b20710; }
     }
   }
 }

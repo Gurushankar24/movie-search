@@ -1,0 +1,35 @@
+.detail-view {
+  display: flex;
+  gap: 40px;
+  padding: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+
+  .poster-side {
+    flex: 1;
+    img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+  }
+
+  .content-side {
+    flex: 2;
+    h2 { font-size: 3rem; margin-top: 0; }
+    .badge {
+      background: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-right: 10px;
+    }
+    .plot {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 25px 0;
+    }
+  }
+}
