@@ -1,3 +1,4 @@
+<app-spinner [isLoading]="isLoading()" />
 <header class="sticky-header">
   <div class="header-container">
     <div class="logo-group">
@@ -27,7 +28,24 @@
       <button class="find-btn" (click)="Onsearch()">Find It</button>
     </div>
   </div>
+ 
+  <!-- show skeletons while loading -->
+<!-- @if (isLoading()) {
+  <div class="movies-grid">
+    @for (item of skeletons; track item) {
+      <app-skeleton-card />
+    }
+  </div>
+} -->
 
+<!-- show real movies when done -->
+@if (!isLoading()) {
+  <div class="movies-grid">
+    @for (movie of apiMoviesList(); track movie.imdbID) {
+      <!-- your existing movie card here -->
+    }
+  </div>
+}
   @if(apiMoviesList().length > 0) {
     <section class="results-section">
       <h3 class="results-count">Found {{ movieCount() }} results for {{ searchedMovie }}</h3>
