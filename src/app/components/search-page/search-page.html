@@ -3,7 +3,7 @@
 
 <main class="main-content">
   <section class="hero-section">
-    <h2>What are we obsessing over tssssonight?</h2>
+    <h2>What are we obsessing over tonight?</h2>
     <p class="hero-subtitle">"Search 500,000+ films. No judgement. (Okay, maybe a little.)"</p>
     <p class="hero-tagline">BECAUSE ONCE IS NEVER ENOUGH</p>
   </section>
@@ -13,45 +13,6 @@
       <span class="material-icons search-icon">search</span>
       <input type="text" [(ngModel)]="searchedMovie" placeholder="Batman" (keyup.enter)="Onsearch()">
       <button class="find-btn" (click)="Onsearch()">Find It</button>
-    </div>
-
-    <div class="filter-bar">
-      <div class="filter-group">
-        <label>Genre</label>
-        <select [(ngModel)]="selectedGenre" (change)="onFilterChange()">
-          <option value="">All Genres</option>
-          @for (genre of genres(); track genre.id) {
-            <option [value]="genre.id">{{ genre.name }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Sort By</label>
-        <select [(ngModel)]="selectedSort" (change)="onFilterChange()">
-          <option value="popularity.desc">Popularity</option>
-          <option value="vote_average.desc">Top Rated</option>
-          <option value="primary_release_date.desc">Newest</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Year</label>
-        <input 
-          type="number" 
-          [(ngModel)]="selectedYear" 
-          placeholder="2024" 
-          (change)="onFilterChange()"
-          min="1900" 
-          max="2026"
-        >
-      </div>
-      
-      @if (selectedGenre() || selectedYear()) {
-        <button class="clear-filters" (click)="selectedGenre.set(''); selectedYear.set(''); onFilterChange()">
-          Clear
-        </button>
-      }
     </div>
   </div>
  
@@ -105,4 +66,4 @@
     <h3 class="logo">ReelObsessed</h3>
     <p>© 2024 Because once is never enough. No judgement, really.</p>
   </div>
-</footer>  
+</footer>

@@ -4,20 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { MovieService } from '../../services/movie-service';
 import { Router } from '@angular/router';
 import { SpinnerComponent } from '../spinner/spinner';
-import { Header } from '../header/header';
 import { ToastService } from '../../services/toast.service';
 
 
 @Component({
   selector: 'app-search-page',
-  imports: [FormsModule, CommonModule,SpinnerComponent],
+  imports: [FormsModule, CommonModule, SpinnerComponent],
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss',
 })
 export class SearchPage {
-  searchedMovie: string = '';
-  // add this line in your component class
-  skeletonItems = Array.from({length: 5}, (_, i) => i + 1); // unique values
+  searchedMovie: string = 'Batman'; // Default search to show something
+  skeletonItems = Array.from({length: 5}, (_, i) => i + 1);
   movieService = inject(MovieService);
   private router = inject(Router);
   private toastService = inject(ToastService);
@@ -25,43 +23,22 @@ export class SearchPage {
   currentPage = signal(1);
   movieCount = signal('');
 
-  // Filters
-  genres = signal<any[]>([]);
-  selectedGenre = signal('');
-  selectedSort = signal('popularity.desc');
-  selectedYear = signal('');
-  
   ngOnInit() {
-    this.fetchGenres();
     if (this.movieService.lastSearchQuery()) {
       this.searchedMovie = this.movieService.lastSearchQuery();
-      this.Onsearch();
-    } else {
-      // Show popular movies by default on empty search if possible
-      this.Onsearch();
     }
-  }
-
-  fetchGenres() {
-    this.movieService.getGenres().subscribe({
-      next: (res) => this.genres.set(res.genres),
-      error: () => this.toastService.error('Failed to load genres'),
-    });
+    this.Onsearch();
   }
 
   Onsearch() {
+    if (!this.searchedMovie.trim()) {
+      return;
+    }
+
     this.movieService.isloading.set(true);
     this.movieService.lastSearchQuery.set(this.searchedMovie);
     
-    // Determine whether to use Discovery (Filters) or Search (Query)
-    // If there is a text search and no genre/year filter, use OMDB
-    const useDiscovery = this.selectedGenre() || this.selectedYear() || !this.searchedMovie;
-    
-    const request = useDiscovery 
-      ? this.movieService.discoverMovies({ genre: this.selectedGenre(), sortBy: this.selectedSort(), year: this.selectedYear() }, 1)
-      : this.movieService.searchMovies(this.searchedMovie, 1);
-
-    request.subscribe({
+    this.movieService.searchMovies(this.searchedMovie, 1).subscribe({
       next: (res) => {
         this.currentPage.set(1);
         
@@ -95,11 +72,6 @@ export class SearchPage {
     });
   }
 
-  onFilterChange() {
-    this.currentPage.set(1);
-    this.Onsearch();
-  }
-
   onClick(data: any) {
     this.movieService.isloading.set(true);
     this.movieService.selectedMovieData.set(data);
@@ -107,14 +79,11 @@ export class SearchPage {
   }
 
   loadmore() {
+    if (!this.searchedMovie.trim()) return;
+
     this.currentPage.update((page) => page + 1);
-    const useDiscovery = this.selectedGenre() || this.selectedYear() || !this.searchedMovie;
-
-    const request = useDiscovery
-      ? this.movieService.discoverMovies({ genre: this.selectedGenre(), sortBy: this.selectedSort(), year: this.selectedYear() }, this.currentPage())
-      : this.movieService.searchMovies(this.searchedMovie, this.currentPage());
-
-    request.subscribe({
+    
+    this.movieService.searchMovies(this.searchedMovie, this.currentPage()).subscribe({
       next: (res) => {
         if (res.Response === 'True' && res.Search) {
           this.apiMoviesList.update((movies) => [...movies, ...res.Search]);
@@ -125,7 +94,6 @@ export class SearchPage {
       error: (err) => {
         this.toastService.error('Something went wrong, try again');
       }
-  });
-    
+    });
   }
 }
