@@ -1,6 +1,6 @@
 <header class="liked-header">
   <div class="header-container">
-    <button class="back-link" (click)="OnBack()">
+    <button class="back-link" (click)="onBack()">
       <span class="material-icons">arrow_back</span>
       Back to Search
     </button>
@@ -12,21 +12,40 @@
   <h2 class="page-title">Liked Movies</h2>
   
   @if (existingMovies().length > 0) {
-    <div class="movie-grid">
-      @for (existingmovies of existingMovies(); track $index) {
-        <div class="movie-card">
-          <div class="poster-container">
-            <img
-              [src]="existingmovies.Poster !== 'N/A' ? existingmovies.Poster : 'assets/placeholder.png'"
-              [alt]="existingmovies.Title"
-            />
-            <button class="add-btn">
+    <div class="movie-grid" cdkDropListGroup>
+      @for (movie of existingMovies(); track movie.imdbID) {
+        <div class="card-wrapper" @cardAnimation>
+          <!-- Delete zone revealed behind the card -->
+          <div class="delete-zone">
+            <span class="material-icons">heart_broken</span>
+          </div>
+
+          <div 
+            class="movie-card" 
+            cdkDrag 
+            cdkDragLockAxis="x"
+            (cdkDragEnded)="onDragEnded($event, movie)"
+          >
+            <!-- Desktop delete button (💔) -->
+            <button class="delete-btn" (click)="$event.stopPropagation(); removeMovie(movie)" title="Remove from Liked">
+              <span class="material-icons">heart_broken</span>
+            </button>
+
+            <!-- Add to wishlist button (+) -->
+            <button class="add-btn" title="Add to Wishlist">
               <span class="material-icons">add</span>
             </button>
-          </div>
-          <div class="movie-info">
-            <h4>{{ existingmovies.Title }}</h4>
-            <p>{{ existingmovies.Year }} • {{ existingmovies.Type }}</p>
+
+            <div class="poster-container">
+              <img
+                [src]="movie.Poster !== 'N/A' ? movie.Poster : 'assets/placeholder.png'"
+                [alt]="movie.Title"
+              />
+            </div>
+            <div class="movie-info">
+              <h4>{{ movie.Title }}</h4>
+              <p>{{ movie.Year }} • {{ movie.Type }}</p>
+            </div>
           </div>
         </div>
       }
@@ -36,7 +55,7 @@
       <span class="material-icons empty-icon">heart_broken</span>
       <h2>No liked movies yet</h2>
       <p>Start exploring and like movies you love</p>
-      <button class="explore-btn" (click)="OnBack()">
+      <button class="explore-btn" (click)="onBack()">
         Explore Movies
       </button>
     </div>

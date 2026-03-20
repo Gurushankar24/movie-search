@@ -14,7 +14,7 @@ import { ToastService } from '../../services/toast.service';
   styleUrl: './search-page.scss',
 })
 export class SearchPage {
-  searchedMovie: string = 'Batman'; // Default search to show something
+  searchedMovie: string = ''; // Default search to show something
   skeletonItems = Array.from({length: 5}, (_, i) => i + 1);
   movieService = inject(MovieService);
   private router = inject(Router);
