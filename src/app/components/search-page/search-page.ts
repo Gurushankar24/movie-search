@@ -20,6 +20,7 @@ export class SearchPage {
   private router = inject(Router);
   private toastService = inject(ToastService);
   apiMoviesList = signal<any[]>([]);
+  recentlyViewed = signal<any[]>([]);
   currentPage = signal(1);
   movieCount = signal('');
 
@@ -27,7 +28,20 @@ export class SearchPage {
     if (this.movieService.lastSearchQuery()) {
       this.searchedMovie = this.movieService.lastSearchQuery();
     }
+    this.loadRecentlyViewed();
     this.Onsearch();
+  }
+
+  loadRecentlyViewed() {
+    const saved = localStorage.getItem('recentlyViewed');
+    if (saved) {
+      this.recentlyViewed.set(JSON.parse(saved));
+    }
+  }
+
+  clearRecentlyViewed() {
+    localStorage.removeItem('recentlyViewed');
+    this.recentlyViewed.set([]);
   }
 
   Onsearch() {
@@ -74,6 +88,23 @@ export class SearchPage {
 
   onClick(data: any) {
     this.movieService.isloading.set(true);
+    
+    // Recently Viewed Logic
+    let current = [...this.recentlyViewed()];
+    const index = current.findIndex(m => m.imdbID === data.imdbID);
+    
+    if (index !== -1) {
+      current.splice(index, 1);
+    }
+    
+    current.unshift(data);
+    if (current.length > 10) {
+      current = current.slice(0, 10);
+    }
+    
+    localStorage.setItem('recentlyViewed', JSON.stringify(current));
+    this.recentlyViewed.set(current);
+
     this.movieService.selectedMovieData.set(data);
     this.router.navigate(['/movie-details']);
   }

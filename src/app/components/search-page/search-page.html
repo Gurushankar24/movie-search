@@ -15,6 +15,35 @@
       <button class="find-btn" (click)="Onsearch()">Find It</button>
     </div>
   </div>
+
+  @if (recentlyViewed().length > 0 && !searchedMovie.trim() && apiMoviesList().length === 0) {
+    <section class="recently-viewed-section">
+      <div class="section-header">
+        <div class="title-group">
+          <span class="material-icons">schedule</span>
+          <div class="text-group">
+            <h3>Recently Viewed</h3>
+            <p class="section-subtitle">Pick up where you left off</p>
+          </div>
+        </div>
+        <button class="clear-btn" (click)="clearRecentlyViewed()">Clear</button>
+      </div>
+      
+      <div class="recent-scroll-row">
+        @for (item of recentlyViewed(); track item.imdbID) {
+          <div class="recent-card" (click)="onClick(item)">
+            <div class="recent-poster">
+              <img [src]="item.Poster !== 'N/A' ? item.Poster : 'assets/placeholder.png'" [alt]="item.Title">
+            </div>
+            <div class="recent-info">
+              <h4 class="truncate">{{ item.Title }}</h4>
+              <p>{{ item.Year }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
  
   <!-- show skeletons while loading -->
   @if (movieService.isloading()) {

@@ -72,6 +72,15 @@ export class MovieDetails {
     this.router.navigate(['/search']);
   }
 
+  watchTrailer() {
+    const movie = this.selectedMovieDetails();
+    if (movie && movie.Title) {
+      const query = encodeURIComponent(`${movie.Title} official trailer`);
+      const url = `https://www.youtube.com/results?search_query=${query}`;
+      window.open(url, '_blank');
+    }
+  }
+
   OnlikedMovie(data: any) {
     console.log(data)
     const likedMovies = localStorage.getItem('likedMovies');

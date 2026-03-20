@@ -43,6 +43,7 @@
         <!-- CTA Row Placeholder -->
         <div class="skeleton-cta-row">
           <div class="skeleton-btn shimmer"></div>
+          <div class="skeleton-btn shimmer"></div>
           <div class="skeleton-icon-btn shimmer"></div>
         </div>
       </div>
@@ -87,6 +88,11 @@
         </div>
 
         <div class="cta-row">
+          <button class="watch-trailer-btn" (click)="watchTrailer()">
+            <span class="material-icons">play_arrow</span>
+            Watch Trailer
+          </button>
+
           <div class="watchlist-wrapper">
             <button class="add-watchlist-btn" (click)="OnWishlist()">
               <span class="material-icons">bookmark_add</span>
