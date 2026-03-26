@@ -19,18 +19,26 @@ export class SearchPage {
   movieService = inject(MovieService);
   private router = inject(Router);
   private toastService = inject(ToastService);
-  apiMoviesList = signal<any[]>([]);
   recentlyViewed = signal<any[]>([]);
-  currentPage = signal(1);
-  movieCount = signal('');
   hasSearched = signal(false);
 
   ngOnInit() {
+    this.movieService.isloading.set(false);
+    this.loadRecentlyViewed();
+    
     if (this.movieService.lastSearchQuery()) {
       this.searchedMovie = this.movieService.lastSearchQuery();
+      // If we already have results for this search, don't re-search
+      if (this.movieService.apiMoviesList().length > 0) {
+        this.hasSearched.set(true);
+        return;
+      }
     }
-    this.loadRecentlyViewed();
-    this.Onsearch();
+    
+    // Only search if we have a query and no results
+    if (this.searchedMovie.trim()) {
+      this.Onsearch();
+    }
   }
 
   loadRecentlyViewed() {
@@ -48,7 +56,7 @@ export class SearchPage {
   Onsearch() {
     if (!this.searchedMovie.trim()) {
       this.hasSearched.set(false);
-      this.apiMoviesList.set([]);
+      this.movieService.apiMoviesList.set([]);
       return;
     }
 
@@ -58,7 +66,7 @@ export class SearchPage {
     
     this.movieService.searchMovies(this.searchedMovie, 1).subscribe({
       next: (res) => {
-        this.currentPage.set(1);
+        this.movieService.currentPage.set(1);
         
         if (res.Search) {
           const unique = res.Search.filter((currentVal: any, index: number, wholeArray: any) => {
@@ -69,15 +77,15 @@ export class SearchPage {
               })
             );
           });
-          this.apiMoviesList.set(unique);
-          this.movieCount.set(res.totalResults);
+          this.movieService.apiMoviesList.set(unique);
+          this.movieService.movieCount.set(res.totalResults);
         }
         
         this.movieService.isloading.set(false);
       },
       error: (err) => {
-        this.apiMoviesList.set([]);
-        this.movieCount.set('0');
+        this.movieService.apiMoviesList.set([]);
+        this.movieService.movieCount.set('0');
         this.movieService.isloading.set(false);
       },
     });
@@ -86,13 +94,11 @@ export class SearchPage {
   onInputChange() {
     if (!this.searchedMovie.trim()) {
       this.hasSearched.set(false);
-      this.apiMoviesList.set([]);
+      this.movieService.apiMoviesList.set([]);
     }
   }
 
   onClick(data: any) {
-    this.movieService.isloading.set(true);
-    
     // Recently Viewed Logic
     let current = [...this.recentlyViewed()];
     const index = current.findIndex(m => m.imdbID === data.imdbID);
@@ -102,8 +108,8 @@ export class SearchPage {
     }
     
     current.unshift(data);
-    if (current.length > 10) {
-      current = current.slice(0, 10);
+    if (current.length > 5) {
+      current = current.slice(0, 5);
     }
     
     localStorage.setItem('recentlyViewed', JSON.stringify(current));
@@ -116,12 +122,12 @@ export class SearchPage {
   loadmore() {
     if (!this.searchedMovie.trim()) return;
 
-    this.currentPage.update((page) => page + 1);
+    this.movieService.currentPage.update((page) => page + 1);
     
-    this.movieService.searchMovies(this.searchedMovie, this.currentPage()).subscribe({
+    this.movieService.searchMovies(this.searchedMovie, this.movieService.currentPage()).subscribe({
       next: (res) => {
         if (res.Response === 'True' && res.Search) {
-          this.apiMoviesList.update((movies) => [...movies, ...res.Search]);
+          this.movieService.apiMoviesList.update((movies) => [...movies, ...res.Search]);
         } else {
           this.toastService.info(res.Error || 'No more movies found');
         }

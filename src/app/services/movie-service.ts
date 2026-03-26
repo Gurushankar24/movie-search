@@ -6,11 +6,14 @@ import { Injectable, inject, signal } from '@angular/core';
 })
 export class MovieService {
   private apiKey = 'ca3dab5d';
-  private baseUrl = 'http://www.omdbapi.com';
+  private baseUrl = 'https://www.omdbapi.com';
 
   selectedMovieData = signal<any>('');
   lastSearchQuery = signal<string>('');
   isloading = signal<boolean>(false);
+  apiMoviesList = signal<any[]>([]);
+  currentPage = signal(1);
+  movieCount = signal('');
 
   http = inject(HttpClient);
 

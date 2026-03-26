@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  @if (recentlyViewed().length > 0 && !searchedMovie.trim() && apiMoviesList().length === 0) {
+  @if (recentlyViewed().length > 0 && !searchedMovie.trim() && movieService.apiMoviesList().length === 0) {
     <section class="recently-viewed-section">
       <div class="section-header">
         <div class="title-group">
@@ -36,7 +36,7 @@
               <img [src]="item.Poster !== 'N/A' ? item.Poster : 'assets/placeholder.png'" [alt]="item.Title">
             </div>
             <div class="recent-info">
-              <h4 class="truncate">{{ item.Title }}</h4>
+              <h4>{{ item.Title }}</h4>
               <p>{{ item.Year }}</p>
             </div>
           </div>
@@ -57,12 +57,12 @@
 <!-- show real movies when done -->
 
 
-  @if(apiMoviesList().length > 0) {
+  @if(movieService.apiMoviesList().length > 0) {
     <section class="results-section">
-      <h3 class="results-count">Found {{ movieCount() }} results for {{ searchedMovie }}</h3>
+      <h3 class="results-count">Found {{ movieService.movieCount() }} results for {{ searchedMovie }}</h3>
       
       <div class="movie-grid">
-        @for(item of apiMoviesList(); track $index) {
+        @for(item of movieService.apiMoviesList(); track $index) {
           <div class="movie-card" (click)="onClick(item)">
             <div class="poster-container">
               <img [src]="item.Poster !== 'N/A' ? item.Poster : 'assets/placeholder.png'" [alt]="item.Title">
@@ -78,7 +78,7 @@
         }
       </div>
 
-      @if(apiMoviesList().length) {
+      @if(movieService.apiMoviesList().length) {
         <div class="load-more-container">
           <button class="load-more-btn" (click)="loadmore()">
             Load More Results
@@ -87,7 +87,7 @@
         </div>
       }
     </section>
-  } @else if (!movieService.isloading() && searchedMovie.trim() && apiMoviesList().length === 0 && hasSearched()) {
+  } @else if (!movieService.isloading() && searchedMovie.trim() && movieService.apiMoviesList().length === 0 && hasSearched()) {
     <div class="empty-state">
       <span class="material-icons empty-icon">search_off</span>
       <h2>No results for "{{ searchedMovie }}"</h2>

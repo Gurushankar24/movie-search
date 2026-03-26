@@ -12,12 +12,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.scss',
   animations: [
-    trigger('fadeAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('400ms ease-in', style({ opacity: 1 }))
-      ])
-    ])
+trigger('fadeAnimation', [
+  transition(':enter', [
+    style({ opacity: 0, transform: 'translateY(60px) scale(0.98)' }),
+    animate('500ms cubic-bezier(0.16, 1, 0.3, 1)', 
+      style({ opacity: 1, transform: 'translateY(0) scale(1)' })
+    )
+  ])
+])
   ]
 })
 export class MovieDetails {
@@ -58,6 +60,7 @@ export class MovieDetails {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     const movieData = this.movieService.selectedMovieData();
     console.log(movieData)
     if (movieData && movieData.imdbID) {
