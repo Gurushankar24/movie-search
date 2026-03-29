@@ -107,8 +107,8 @@ npm install -g @angular/cli
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/reelObsessed.git
-cd reelObsessed
+git clone https://github.com/your-username/ReelObsessed.git
+cd ReelObsessed
 
 # Install dependencies
 npm install
@@ -164,11 +164,4 @@ This project was built to practice and demonstrate real-world Angular patterns:
 ## 👤 Author
 
 **Gurushankar**
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+- LinkedIn: [linkedin.com/in/gurushankarv](https://www.linkedin.com/in/gurushankarv)
